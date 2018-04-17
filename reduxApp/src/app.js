@@ -1,22 +1,13 @@
 "use strict"
 import { createStore } from 'redux';
 
+
+import reducers from './reducers/index';
+import { Z_BEST_COMPRESSION } from 'zlib';
 // the point of a reducer is to evaluate what to do with a received action
 
-const reducer = function(state={ books: []}, action) {
-    switch(action.type) {
-        case "POST_BOOK": 
-        let books = state.books.concat(action.payload);
-        return {
-            books: state.books.concat(action.payload)
-        };
 
-        // case "INCREMENT_STATE_NUMBER": return Object.assign(state, {state, ...action.payload});
-        break;
-    }
-}
-
-const store = createStore(reducer);
+const store = createStore(reducers);
 
 store.subscribe(function() {
     console.log('current state is', store.getState());
@@ -25,10 +16,10 @@ store.subscribe(function() {
 store.dispatch({
     type: "POST_BOOK", 
     payload: [{
-        id: 1,
-        title: 'book title 1',
-        description: 'this is the best book',
-        price: 45,
+            id: 1,
+            title: 'book title 1',
+            description: 'this is the best book',
+            price: 45,
         }, 
         {
             id: 2,
@@ -39,18 +30,21 @@ store.dispatch({
 })
 
 store.dispatch({
-    type: "POST_BOOK", 
+    type: "DELETE_BOOK",
     payload: {
-            id: 3,
-            title: 'book title 3',
-            description: 'this is the third book',
-            price: 25,
-        }, 
+        id: 1,
+    }
 })
 
-// store.dispatch({
-//     type: "INCREMENT_STATE_NUMBER",
-//     payload: {
-//         number: 1,
-//     }
-// })
+store.dispatch({
+    type: "UPDATE_BOOK",
+    payload: {
+        id: 2,
+        title: 'Learning Redux quickly!'
+    }
+})
+
+store.dispatch({
+    type:"ADD_TO_CART",
+    payload: [{id: 1}]
+})
